@@ -83,9 +83,7 @@ window.connectDevice = async () => {
     // Device information
     const activeSlot = await qdl.getActiveSlot();
     const storageInfo = await qdl.getStorageInfo();
-    const deviceType = await qdl.getDeviceType();
     createObjectTable(deviceDiv, {
-      "Device Type": deviceType,
       "Active Slot": activeSlot,
       "SOC Serial Number": qdl.sahara?.serial,
       "UFS Serial Number": `0x${storageInfo.serial_num.toString(16).padStart(8, "0")}`,
