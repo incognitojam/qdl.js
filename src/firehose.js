@@ -124,15 +124,12 @@ export class Firehose {
       response = this.xml.getResponse(data);
     }
     if (response.value !== "ACK") {
-      throw new Error("Negative response");
+      throw new Error("Failed to configure: negative response");
     }
     const log = this.xml.getLog(data);
     this.#printLogMessages(log);
-    if (!log.find((message) => message.includes("Calling handler for configure"))) {
-      throw new Error("Failed to configure: handler not called");
-    }
     if (!log.find((message) => message.includes("Storage type set to value UFS"))) {
-      throw new Error("Failed to configure: storage type not set");
+      throw new Error("Failed to configure: storage type not set to UFS");
     }
     this.luns = Array.from({ length: this.cfg.maxlun }, (x, i) => i);
     return true;

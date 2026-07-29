@@ -82,13 +82,13 @@ window.connectDevice = async () => {
 
     // Device information
     const activeSlot = await qdl.getActiveSlot();
-    const storageInfo = await qdl.getStorageInfo();
+    const storageInfo = await qdl.getStorageInfo().catch(() => null);
     createObjectTable(deviceDiv, {
       "Active Slot": activeSlot,
-      "SOC Serial Number": qdl.sahara?.serial,
-      "UFS Serial Number": `0x${storageInfo.serial_num.toString(16).padStart(8, "0")}`,
+      "SOC Serial Number": qdl.sahara?.serial || "N/A (already in firehose mode)",
+      "UFS Serial Number": storageInfo ? `0x${storageInfo.serial_num.toString(16).padStart(8, "0")}` : "N/A",
     });
-    createObjectTable(storageDiv, storageInfo);
+    if (storageInfo) createObjectTable(storageDiv, storageInfo);
 
     // Get GPT info for each LUN
     const lunInfos: LunInfo[] = [];
